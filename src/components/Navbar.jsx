@@ -7,47 +7,73 @@ const menuItems = {
   "복지서비스": [
     {
       category: "서비스 찾기",
-      items: ["서비스 목록", "사회서비스 목록"],
+      items: [
+        { name: "서비스 목록", link: "https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52005M.do" }, 
+        { name: "사회서비스 목록", link: "https://www.bokjiro.go.kr/ssis-tbu/twataa/sociServiceList/sociServiceListView.do" }, 
+      ],
     },
     {
       category: "모의계산",
       items: [
-        "기초연금", "초·중·고 교육비지원", "장애(아동)수당", "국민기초 생활보장",
-        "장애인연금", "한부모 가족지원", "산모신생아 건강관리", "아이돌봄 서비스",
-        "청년월세지원", "자산형성지원"
+        { name: "기초연금", link: "https://www.bokjiro.go.kr/ssis-tbu/twatbz/mkclAsis/mkclInsertBspnPage.do" }, 
+        { name: "장애(아동)수당", link: "https://www.bokjiro.go.kr/ssis-tbu/twatbz/mkclAsis/mkclInsertDscaPage.do" }, 
+        { name: "국민기초 생활보장", link: "https://www.bokjiro.go.kr/ssis-tbu/twatbz/mkclAsis/mkclInsertNblgPage.do" }, 
+        { name: "장애인연금", link: "https://www.bokjiro.go.kr/ssis-tbu/twatbz/mkclAsis/mkclInsertDspnPage.do" }, 
+        { name: "한부모 가족지원", link: "https://www.bokjiro.go.kr/ssis-tbu/twatbz/mkclAsis/mkclInsertOprnPage.do" }, 
+        { name: "산모신생아 건강관리", link: "https://www.bokjiro.go.kr/ssis-tbu/twatbz/mkclAsis/mkclInsertPwnbPage.do" }, 
+        { name: "아이돌봄 서비스", link: "https://www.bokjiro.go.kr/ssis-tbu/twatbz/mkclAsis/mkclInsertCcsvPage.do" }, 
+        { name: "자산형성지원", link: "https://www.bokjiro.go.kr/ssis-tbu/twatbz/mkclAsis/mkclAstfmSpbizPage.do" },
       ],
     },
     {
       category: "맞춤형급여안내(복지멤버십)",
-      items: ["제도 안내", "이용 방법", "안내 대상 사업"],
+      items: [
+        { name: "제도 안내", link: "https://www.bokjiro.go.kr/ssis-tbu/twatza/wmAplyMng/selectWmGdnc.do" }, 
+        { name: "이용 방법", link: "https://www.bokjiro.go.kr/ssis-tbu/twatza/wmAplyMng/selectWmJoinProcGdnc.do" },
+        { name: "안내 대상 사업", link: "https://www.bokjiro.go.kr/ssis-tbu/twatza/wmAplyMng/selectWmJoinProcGdnc.do" }, 
+      ],
     },
     {
       category: "전자바우처 서비스 안내",
       items: [
-        "국가바우처", "사업안내", "사업현황", "국민행복카드", "바우처 판매점",
-        "제공기관 참여 및 평가"
+        { name: "국가바우처", link: "https://www.bokjiro.go.kr/ssis-tbu/twataia/vouReld/vouNtnVouView.do" }, 
+        { name: "사업안내", link: "https://www.bokjiro.go.kr/ssis-tbu/twataca/BizGdnc/moveTWAT52060M.do" }, 
+        { name: "사업현황", link: "https://www.bokjiro.go.kr/ssis-tbu/twataca/BizGdnc/moveTWAT52096M.do" }, 
+        { name: "국민행복카드", link: "https://www.bokjiro.go.kr/ssis-tbu/twataca/BizGdnc/moveTWAT54000M.do" }, 
       ],
     },
   ],
   "서비스신청": [
     {
       category: "복지서비스 신청",
-      items: ["복지급여 신청", "화면 따라하기", "복지서비스 신청서식"],
+      items: [
+        { name: "복지급여 신청", link: "https://www.bokjiro.go.kr/ssis-tbu/loginView.do?tx=20250603160428128_5000000081_11d9d002-8065-4d0e-9406-8742ce18a353&acrValues=2#/" }, 
+        { name: "복지서비스 신청서식", link: "https://www.bokjiro.go.kr/ssis-tbu/twatza/apfmEsotSrv/apfmEsotSrvLst.do" }, 
+      ],
     },
     {
       category: "민원서비스 신청",
       items: [
-        "민원서비스 신청", "가족정보 제공동의", "복지급여계좌변경 동의",
-        "직권신청요청 동의", "증빙서류 제출", "화면 따라하기"
+        { name: "민원서비스 신청", link: "https://www.bokjiro.go.kr/ssis-tbu/loginView.do?tx=20250603160448852_5000000081_b87f5b97-4dec-4c25-b7a8-61cfe0d3ff0c&acrValues=2#/" }, 
+        { name: "가족정보 제공동의", link: "https://www.bokjiro.go.kr/ssis-tbu/loginView.do?tx=20250603160454689_5000000081_96193296-65e6-4c3c-b5e8-9fe7d51571fd&acrValues=2#/" }, 
+        { name: "복지급여계좌변경 동의", link: "https://www.bokjiro.go.kr/ssis-tbu/loginView.do?tx=20250603160459514_5000000081_537f3d74-4105-47c3-923f-3c3dc65f259e&acrValues=2#/" }, 
+        { name: "직권신청요청 동의", link: "https://www.bokjiro.go.kr/ssis-tbu/loginView.do?tx=20250603160505118_5000000081_23fbec4b-3a14-4230-ad40-6d3ccdc4160b&acrValues=2#/" }, 
+        { name: "증빙서류 제출", link: "https://www.bokjiro.go.kr/ssis-tbu/loginView.do?tx=20250603160509980_5000000081_7b5fb5df-7962-4585-bf2a-83e291bfc98f&acrValues=2#/" },
       ],
     },
     {
       category: "증명서발급·진위확인",
-      items: ["증명서발급", "증명서 진위 확인", "장애인등록증 진위 확인"],
+      items: [
+        { name: "증명서발급", link: "https://www.bokjiro.go.kr/ssis-tbu/loginView.do?tx=20250603160520548_5000000081_233d850a-c700-4467-96ee-98cd82619ed8&acrValues=2#/" }, 
+        { name: "증명서 진위 확인", link: "https://www.bokjiro.go.kr/ssis-tbu/twatza/certfIssuAplyMng/selectCertfTruflsIdnty.do" },
+        { name: "장애인등록증 진위 확인", link: "https://www.bokjiro.go.kr/ssis-tbu/loginView.do?tx=20250603160531737_5000000081_282b3054-8109-483d-a26d-1462d71537dd&acrValues=2#/" }, 
+      ],
     },
     {
       category: "사회서비스 신청",
-      items: ["시설 이용 신청"],
+      items: [
+        { name: "시설 이용 신청", link: "https://www.bokjiro.go.kr/ssis-tbu/twataa/sociServiceList/sociServiceListView.do?aplyYn=Y" }, 
+      ],
     },
   ],
 };
@@ -55,8 +81,6 @@ const menuItems = {
 const navMenus = [
   { name: "복지서비스" },
   { name: "서비스신청" },
-  { name: "채팅상담", to: "/chat" },
-  { name: "약 알람 관리", to: "/alarm-groups", role: "SOCIAL_WORKER" },
 ];
 
 const Navbar = () => {
@@ -90,7 +114,21 @@ const Navbar = () => {
   const handleMenuEnter = (menuName) => setHovered(menuName);
   const handleMenuLeave = () => setTimeout(() => setHovered(null), 100);
 
-  const isSocialWorker = user?.role === 'SOCIAL_WORKER';
+  const handleItemClick = (item) => {
+    if (item.link) {
+      if (item.link.startsWith('http')) {
+        // 외부 링크
+        window.open(item.link, '_blank');
+      } else {
+        // 내부 링크
+        navigate(item.link);
+      }
+    } else {
+      console.log(`"${item.name}" 링크가 아직 설정되지 않았습니다.`);
+      // 임시로 alert 표시 (나중에 제거 가능)
+      alert(`"${item.name}" 링크가 아직 설정되지 않았습니다.`);
+    }
+  };
 
   return (
     <nav className={navbarStyles.navWrapper}>
@@ -104,57 +142,50 @@ const Navbar = () => {
 
           <div className={navbarStyles.menuWrapper}>
             <div className="flex space-x-4">
-              {navMenus.map((menu) => {
-                if (menu.role && user?.role !== menu.role) return null;
-                return menu.to ? (
-                  <Link
-                    key={menu.name}
-                    to={menu.to}
-                    className={`${navbarStyles.menuItemBase} ${navbarStyles.menuItemInactive}`}
+              {navMenus.map((menu) => (
+                <div
+                  key={menu.name}
+                  className="relative group"
+                  onMouseEnter={() => handleMenuEnter(menu.name)}
+                  onMouseLeave={handleMenuLeave}
+                >
+                  <button
+                    className={`${navbarStyles.menuItemBase} ${
+                      hovered === menu.name ? navbarStyles.menuItemActive : navbarStyles.menuItemInactive
+                    } flex items-center`}
                   >
                     {menu.name}
-                  </Link>
-                ) : (
-                  <div
-                    key={menu.name}
-                    className="relative group"
-                    onMouseEnter={() => handleMenuEnter(menu.name)}
-                    onMouseLeave={handleMenuLeave}
-                  >
-                    <button
-                      className={`${navbarStyles.menuItemBase} ${
-                        hovered === menu.name ? navbarStyles.menuItemActive : navbarStyles.menuItemInactive
-                      } flex items-center`}
+                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {hovered === menu.name && (
+                    <div
+                      className={navbarStyles.dropdownWrapper}
+                      onMouseEnter={() => setHovered(menu.name)}
+                      onMouseLeave={() => setHovered(null)}
                     >
-                      {menu.name}
-                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    {hovered === menu.name && (
-                      <div
-                        className={navbarStyles.dropdownWrapper}
-                        onMouseEnter={() => setHovered(menu.name)}
-                        onMouseLeave={() => setHovered(null)}
-                      >
-                        <div className={navbarStyles.invisibleSpacer}></div>
-                        {menuItems[menu.name].map((subMenu, index) => (
-                          <div key={index}>
-                            <h4 className={navbarStyles.dropdownTitle}>{subMenu.category}</h4>
-                            <ul className="space-y-1">
-                              {subMenu.items.map((item, idx) => (
-                                <li key={idx} className={navbarStyles.dropdownItem}>
-                                  {item}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                      <div className={navbarStyles.invisibleSpacer}></div>
+                      {menuItems[menu.name].map((subMenu, index) => (
+                        <div key={index}>
+                          <h4 className={`${navbarStyles.dropdownTitle} mb-2`}>{subMenu.category}</h4>
+                          <ul className="space-y-1">
+                            {subMenu.items.map((item, idx) => (
+                              <li 
+                                key={idx} 
+                                className={`${navbarStyles.dropdownItem} cursor-pointer hover:bg-gray-100 px-2 py-1 rounded transition-colors`}
+                                onClick={() => handleItemClick(item)}
+                              >
+                                {item.name}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
 
@@ -163,11 +194,6 @@ const Navbar = () => {
               <div className={navbarStyles.loadingText}>로딩 중...</div>
             ) : isLoggedIn ? (
               <>
-                {isSocialWorker && (
-                  <Link to="/assign-elderly" className={navbarStyles.linkBase}>
-                    노인 할당
-                  </Link>
-                )}
                 <Link to="/notifications" className="relative mr-3 group">
                   <svg
                     className="w-6 h-6 text-gray-600 group-hover:text-blue-500 transition-colors"
