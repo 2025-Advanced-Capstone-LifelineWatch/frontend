@@ -1,20 +1,47 @@
 import { getToken, onMessage, deleteToken } from "firebase/messaging";
 import { messaging } from "./firebase-config";
 
+// 🔧 복용 시간 포맷 변경 함수
+const formatTimeInBody = (rawBody) => {
+  const timeRegex = /복용 시간: (\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/;
+  const match = rawBody.match(timeRegex);
+  if (!match) return rawBody;
+
+  try {
+    const date = new Date(match[1]);
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const isPM = hours >= 12;
+    const period = isPM ? "오후" : "오전";
+
+    hours = hours % 12 || 12; // 0시는 12시로 보정
+
+    const formattedTime = `${month}-${day}, ${period} ${hours}:${minutes}`;
+    return rawBody.replace(match[1], formattedTime);
+  } catch (e) {
+    return rawBody;
+  }
+};
+
 const saveNotification = (payload, source = "unknown") => {
   const title = payload?.data?.title || payload?.notification?.title || "";
-  const body = payload?.data?.body || payload?.notification?.body || "";
-  const elderlyId = payload?.data?.elderlyId || "";
+  let body = payload?.data?.body || payload?.notification?.body || "";
 
+  // ✅ 시간 포맷 적용
+  body = formatTimeInBody(body);
+
+  const elderlyId = payload?.data?.elderlyId || "";
   const isEmergency = title.includes("응급상황");
 
   const dedupKey = `${title}-${body}-${elderlyId}`;
   const existing = JSON.parse(localStorage.getItem("notifications") || "[]");
 
-
   if (!isEmergency) {
-    const isDuplicate = existing.some(n =>
-      `${n.title}-${n.body}-${n?.data?.elderlyId || ''}` === dedupKey
+    const isDuplicate = existing.some(
+      (n) => `${n.title}-${n.body}-${n?.data?.elderlyId || ""}` === dedupKey
     );
     if (isDuplicate) {
       console.log(`🚫 내용 기준 중복 알림 차단 (${source}):`, dedupKey);
@@ -22,7 +49,10 @@ const saveNotification = (payload, source = "unknown") => {
     }
   }
 
-  const messageId = payload?.messageId || payload?.fcmMessageId || `${Date.now()}_${Math.random()}`;
+  const messageId =
+    payload?.messageId ||
+    payload?.fcmMessageId ||
+    `${Date.now()}_${Math.random()}`;
 
   const newNotification = {
     messageId,
@@ -96,7 +126,8 @@ export const requestPermissionAndGetToken = async () => {
     }
 
     const token = await getToken(messaging, {
-      vapidKey: "BCrhN2GE-drKvZopoZ8jdYJtRweVnXBJGV5CH9gqr2WOp0BhdAWV4ybY3W9cdxkg4Xnllqw8u4Gn0aLWie5FHfQ",
+      vapidKey:
+        "BCrhN2GE-drKvZopoZ8jdYJtRweVnXBJGV5CH9gqr2WOp0BhdAWV4ybY3W9cdxkg4Xnllqw8u4Gn0aLWie5FHfQ",
     });
     console.log("✅ FCM Token:", token);
     return token;
@@ -118,7 +149,8 @@ export const forceRefreshFcmToken = async () => {
     await deleteToken(messaging);
 
     const token = await getToken(messaging, {
-      vapidKey: "BCrhN2GE-drKvZopoZ8jdYJtRweVnXBJGV5CH9gqr2WOp0BhdAWV4ybY3W9cdxkg4Xnllqw8u4Gn0aLWie5FHfQ",
+      vapidKey:
+        "BCrhN2GE-drKvZopoZ8jdYJtRweVnXBJGV5CH9gqr2WOp0BhdAWV4ybY3W9cdxkg4Xnllqw8u4Gn0aLWie5FHfQ",
     });
     console.log("🔁 새로 발급된 FCM 토큰:", token);
     return token;
