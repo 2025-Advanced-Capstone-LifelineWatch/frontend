@@ -5,15 +5,14 @@ export const navbarStyles = {
   logo: "h-10 w-auto",
   
   menuWrapper: "ml-6 lg:ml-10 flex-1",
-  menuItemBase:
-    "px-2 lg:px-4 py-2 text-sm lg:text-base font-medium text-gray-700 hover:text-indigo-600 border-b-2 transition",
+  menuItemBase: "px-2 lg:px-4 py-2 text-sm lg:text-base font-medium text-gray-700 hover:text-indigo-600 border-b-2 transition",
   menuItemActive: "border-indigo-600 text-indigo-600",
   menuItemInactive: "border-transparent",
   
-  dropdownWrapper:
-    "absolute left-1/2 -translate-x-1/2 top-11 bg-white shadow-lg rounded-md p-3 lg:p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 lg:gap-6 w-[95vw] sm:w-[90vw] lg:w-[85vw] xl:w-[80vw] max-w-5xl z-50 border border-gray-200 transition-opacity duration-200 max-h-[80vh] overflow-y-auto",
-  dropdownTitle: "text-sm lg:text-base font-bold mb-2 text-indigo-700",
-  dropdownItem: "cursor-pointer hover:text-indigo-500 text-gray-600 text-xs lg:text-sm transition py-1",
+  // 새로운 드롭다운 스타일 (fixed 포지셔닝용)
+  dropdownWrapper: "bg-white shadow-xl rounded-lg border border-gray-200 p-6 min-w-[800px] max-w-[1200px]",
+  dropdownTitle: "text-sm font-bold mb-3 text-indigo-700 border-b border-gray-100 pb-2",
+  dropdownItem: "cursor-pointer hover:text-indigo-500 hover:bg-gray-50 text-gray-600 text-sm transition py-2 px-2 rounded",
   invisibleSpacer: "absolute h-2 w-full top-0 -translate-y-full",
   
   authWrapper: "flex items-center space-x-2 lg:space-x-6",

@@ -85,6 +85,7 @@ const navMenus = [
 
 const Navbar = () => {
   const [hovered, setHovered] = useState(null);
+  const [dropdownPosition, setDropdownPosition] = useState({});
   const navigate = useNavigate();
   const { user, isLoggedIn, logout, loading } = useUser();
   const [hasNewNotification, setHasNewNotification] = useState(false);
@@ -111,137 +112,177 @@ const Navbar = () => {
     alert('로그아웃 되었습니다.');
   };
 
-  const handleMenuEnter = (menuName) => setHovered(menuName);
-  const handleMenuLeave = () => setTimeout(() => setHovered(null), 100);
+  const handleMenuEnter = (menuName, event) => {
+    setHovered(menuName);
+    
+    // 드롭다운 위치 계산
+    const rect = event.currentTarget.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const dropdownWidth = 800;
+    
+    let leftPosition = rect.left;
+    
+    if (leftPosition + dropdownWidth > viewportWidth - 20) {
+      leftPosition = viewportWidth - dropdownWidth - 20;
+    }
+    
+    if (leftPosition < 20) {
+      leftPosition = 20;
+    }
+    
+    setDropdownPosition({
+      left: leftPosition,
+      top: rect.bottom
+    });
+  };
+
+  const handleMenuLeave = () => {
+    setHovered(null);
+  };
 
   const handleItemClick = (item) => {
+    setHovered(null);
+    
     if (item.link) {
       if (item.link.startsWith('http')) {
-        // 외부 링크
         window.open(item.link, '_blank');
       } else {
-        // 내부 링크
         navigate(item.link);
       }
     } else {
       console.log(`"${item.name}" 링크가 아직 설정되지 않았습니다.`);
-      // 임시로 alert 표시 (나중에 제거 가능)
       alert(`"${item.name}" 링크가 아직 설정되지 않았습니다.`);
     }
   };
 
   return (
-    <nav className={navbarStyles.navWrapper}>
-      <div className={navbarStyles.container}>
-        <div className={navbarStyles.inner}>
-          <div className="flex-shrink-0">
-            <Link to="/" className="flex items-center">
-              <img src="/images/logo.png" alt="LifeLine 로고" className={navbarStyles.logo} />
-            </Link>
-          </div>
+    <>
+      <nav className={navbarStyles.navWrapper}>
+        <div className={navbarStyles.container}>
+          <div className={navbarStyles.inner}>
+            <div className="flex-shrink-0">
+              <Link to="/" className="flex items-center">
+                <img src="/images/logo.png" alt="LifeLine 로고" className={navbarStyles.logo} />
+              </Link>
+            </div>
 
-          <div className={navbarStyles.menuWrapper}>
-            <div className="flex space-x-4">
-              {navMenus.map((menu) => (
-                <div
-                  key={menu.name}
-                  className="relative group"
-                  onMouseEnter={() => handleMenuEnter(menu.name)}
-                  onMouseLeave={handleMenuLeave}
-                >
-                  <button
-                    className={`${navbarStyles.menuItemBase} ${
-                      hovered === menu.name ? navbarStyles.menuItemActive : navbarStyles.menuItemInactive
-                    } flex items-center`}
+            <div className={navbarStyles.menuWrapper}>
+              <div className="flex space-x-4">
+                {navMenus.map((menu) => (
+                  <div
+                    key={menu.name}
+                    className="relative"
+                    onMouseEnter={(e) => handleMenuEnter(menu.name, e)}
+                    onMouseLeave={handleMenuLeave}
                   >
-                    {menu.name}
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  {hovered === menu.name && (
-                    <div
-                      className={navbarStyles.dropdownWrapper}
-                      onMouseEnter={() => setHovered(menu.name)}
-                      onMouseLeave={() => setHovered(null)}
+                    <button
+                      className={`${navbarStyles.menuItemBase} ${
+                        hovered === menu.name ? navbarStyles.menuItemActive : navbarStyles.menuItemInactive
+                      } flex items-center`}
                     >
-                      <div className={navbarStyles.invisibleSpacer}></div>
-                      {menuItems[menu.name].map((subMenu, index) => (
-                        <div key={index}>
-                          <h4 className={`${navbarStyles.dropdownTitle} mb-2`}>{subMenu.category}</h4>
-                          <ul className="space-y-1">
-                            {subMenu.items.map((item, idx) => (
-                              <li 
-                                key={idx} 
-                                className={`${navbarStyles.dropdownItem} cursor-pointer hover:bg-gray-100 px-2 py-1 rounded transition-colors`}
-                                onClick={() => handleItemClick(item)}
-                              >
-                                {item.name}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                      {menu.name}
+                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className={navbarStyles.authWrapper}>
+              {loading ? (
+                <div className={navbarStyles.loadingText}>로딩 중...</div>
+              ) : isLoggedIn ? (
+                <>
+                  <Link to="/notifications" className="relative mr-3 group">
+                    <svg
+                      className="w-6 h-6 text-gray-600 group-hover:text-blue-500 transition-colors"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                      />
+                    </svg>
+                    {hasNewNotification && (
+                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    )}
+                  </Link>
+                  <Link to="/mypage-auth" className="flex items-center space-x-1 group">
+                    <span className={navbarStyles.linkBase}>
+                      {user?.name ? `${user.name}님` : '마이페이지'}
+                    </span>
+                    <svg className={navbarStyles.iconBase} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </Link>
+                  <button onClick={handleLogout} className={navbarStyles.linkBase}>
+                    로그아웃
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="flex items-center space-x-1 group">
+                    <span className={navbarStyles.linkBase}>로그인</span>
+                    <svg className={navbarStyles.iconBase} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </Link>
+                  <Link to="/signup" className={navbarStyles.linkBase}>
+                    회원가입
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* 드롭다운 메뉴 - 확장된 hover 영역 */}
+      {hovered && (
+        <div
+          className="fixed z-[60]"
+          style={{
+            left: `${dropdownPosition.left - 50}px`, // 좌우 여유 공간 추가
+            top: `${dropdownPosition.top - 20}px`,   // 상단 여유 공간 추가
+            width: `${Math.min(900, window.innerWidth - 100)}px`, // 너비 확장
+            height: 'auto',
+            paddingTop: '20px', // 내부 패딩으로 실제 컨텐츠 위치 조정
+            paddingLeft: '50px',
+            paddingRight: '50px',
+          }}
+          onMouseEnter={() => setHovered(hovered)}
+          onMouseLeave={() => setHovered(null)}
+        >
+          <div className="bg-white shadow-xl rounded-lg border border-gray-200 p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {menuItems[hovered].map((subMenu, index) => (
+                <div key={index} className="space-y-3">
+                  <h4 className={navbarStyles.dropdownTitle}>{subMenu.category}</h4>
+                  <ul className="space-y-2">
+                    {subMenu.items.map((item, idx) => (
+                      <li 
+                        key={idx} 
+                        className={navbarStyles.dropdownItem}
+                        onClick={() => handleItemClick(item)}
+                      >
+                        {item.name}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
             </div>
           </div>
-
-          <div className={navbarStyles.authWrapper}>
-            {loading ? (
-              <div className={navbarStyles.loadingText}>로딩 중...</div>
-            ) : isLoggedIn ? (
-              <>
-                <Link to="/notifications" className="relative mr-3 group">
-                  <svg
-                    className="w-6 h-6 text-gray-600 group-hover:text-blue-500 transition-colors"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                    />
-                  </svg>
-                  {hasNewNotification && (
-                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                  )}
-                </Link>
-                <Link to="/mypage-auth" className="flex items-center space-x-1 group">
-                  <span className={navbarStyles.linkBase}>
-                    {user?.name ? `${user.name}님` : '마이페이지'}
-                  </span>
-                  <svg className={navbarStyles.iconBase} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </Link>
-                <button onClick={handleLogout} className={navbarStyles.linkBase}>
-                  로그아웃
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="flex items-center space-x-1 group">
-                  <span className={navbarStyles.linkBase}>로그인</span>
-                  <svg className={navbarStyles.iconBase} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </Link>
-                <Link to="/signup" className={navbarStyles.linkBase}>
-                  회원가입
-                </Link>
-              </>
-            )}
-          </div>
         </div>
-      </div>
-    </nav>
+      )}
+    </>
   );
 };
 
